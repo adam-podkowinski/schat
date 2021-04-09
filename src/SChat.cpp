@@ -18,6 +18,7 @@ bool SChat::Run(int argc, const char* argv[]) {
   std::cout << "\033[2J\033[1;1H";
 
   if (argv[1] != nullptr) {
+    // CLIENT
     if (strcmp(argv[1], "client") == 0) {
       Client client;
       if (!client.connectSocket("127.0.0.1", 6969)) {
@@ -26,10 +27,17 @@ bool SChat::Run(int argc, const char* argv[]) {
       }
       while (true) {
         std::string message = client.listen();
-        std::cout << message << std::endl;
+        std::cout << "127.0.0.1:6969 says: " << message << std::endl;
       }
+
+      client.close();
+
+      // SERVER
     } else if (strcmp(argv[1], "server") == 0) {
       Server server;
+      std::cout
+          << "Waiting for client to connect to this IP (192.168.3.15:6969)"
+          << std::endl;
       if (!server.host(6969)) {
         std::cout << "Quiting because of server errors" << std::endl;
         return false;
@@ -42,6 +50,9 @@ bool SChat::Run(int argc, const char* argv[]) {
           std::cout << "Failed to send a message" << std::endl;
         }
       }
+
+      server.close();
+
     } else {
       std::cout << "Unrecognized option!" << std::endl;
       return false;

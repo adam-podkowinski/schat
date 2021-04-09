@@ -14,4 +14,13 @@ class Client {
   std::string listen();
   bool sendMessage(const char* message);
   bool connectSocket(const char* ip, int port);
+
+  inline void close() {
+#if defined(_WIN32) || defined(WIN32)
+    closesocket(thisSocket);
+    WSACleanup();
+#else
+    ::close(sock);
+#endif
+  }
 };

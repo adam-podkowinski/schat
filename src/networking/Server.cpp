@@ -6,7 +6,7 @@
 
 #define PORT 6969
 
-Server::Server() { std::cout << "Hello from server 🖥️ " << std::endl; }
+Server::Server() {}
 
 Server::~Server() {}
 

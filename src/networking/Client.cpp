@@ -6,13 +6,13 @@
 
 #define PORT 6969
 
-Client::Client() { std::cout << "Hello from Client 🛂" << std::endl; }
+Client::Client() {}
 
 Client::~Client() {}
 
 std::string Client::listen() {
   char readBuffer[1024] = {0};
-  if (read(sock, readBuffer, 1024) < 0) {
+  if (recv(sock, readBuffer, sizeof(readBuffer), 0) < 0) {
     return "ERROR listening for input (CLIENT)";
   }
   return readBuffer;
@@ -44,6 +44,8 @@ bool Client::connectSocket(const char *ip, int port) {
     printf("\nConnection Failed (CLIENT) \n");
     return false;
   }
+
+  std::cout << "Connected to server: " << ip << ":" << port << std::endl;
 
   return true;
 }

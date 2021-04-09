@@ -16,4 +16,13 @@ class Server {
   bool host(int port);
   bool sendMessage(const char * message);
   std::string listen();
+
+  inline void close() {
+#if defined(_WIN32) || defined(WIN32)
+    closesocket(thisSocket);
+    WSACleanup();
+#else
+    ::close(new_socket);
+#endif
+  }
 };
