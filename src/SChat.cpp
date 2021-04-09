@@ -1,29 +1,26 @@
 #include "./SChat.h"
-#include "./networking/Client.h"
-#include "./networking/Server.h"
+
+#include <string.h>
 
 #include <iostream>
+
+#include "./networking/Client.h"
+#include "./networking/Server.h"
 
 SChat::SChat() {}
 
 SChat::~SChat() {}
 
-constexpr unsigned int str2int(const char* str, int h = 0) {
-  return !str[h] ? 5381 : (str2int(str, h + 1) * 33) ^ str[h];
-}
-
 bool SChat::Run(int argc, const char* argv[]) {
-  switch (str2int(argv[1])) {
-    case str2int("client"):
-      std::cout << "Running as Client" << std::endl;
-      //Client client;
-      break;
-    case str2int("server"):
-      std::cout << "Running as Server" << std::endl;
-      //Server server;
-      break;
-    default:
-      std::cout << "Unrecognized argument" << std::endl;
+  if (argv[1] != nullptr) {
+    if (strcmp(argv[1], "client") == 0) {
+      Client client;
+      client.connectSocket("127.0.0.1", 6969);
+      client.listen();
+    } else if (strcmp(argv[1], "server") == 0) {
+      Server server;
+      server.host();
+    }
   }
 
   return true;
