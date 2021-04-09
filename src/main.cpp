@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "SChat.h"
 
 int main(int argc, char const *argv[]) {

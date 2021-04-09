@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.16.0)
 project(schat)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -14,3 +14,5 @@ set(
 include_directories(include/)
 
 add_executable(schat ${SRC_FILES})
+
+target_precompile_headers(schat PUBLIC include/precompiled.h)

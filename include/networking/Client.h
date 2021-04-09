@@ -1,7 +1,6 @@
 #pragma once
 #include <iostream>
 
-#include <netinet/in.h>
 class Client {
  public:
  private:
@@ -13,6 +12,6 @@ class Client {
   virtual ~Client();
 
   std::string listen();
-  bool sendMessage(const char * message);
+  bool sendMessage(const char* message);
   bool connectSocket(const char* ip, int port);
 };
