@@ -1,19 +1,20 @@
 #pragma once
 #include <netinet/in.h>
+
 #include <iostream>
 
 class Server {
  private:
-  int server_fd, new_socket, valread;
+  int server_fd, new_socket;
   struct sockaddr_in address;
   int opt = 1;
-  static constexpr int addrlen = sizeof(address);
-  char readBuffer[1024] = {0};
+  int addrlen = sizeof(address);
 
  public:
   Server();
   virtual ~Server();
 
   bool host(int port);
+  bool sendMessage(const char * message);
   std::string listen();
 };

@@ -1,5 +1,9 @@
 #include "networking/Server.h"
 
+#include <unistd.h>
+
+#include <cstring>
+
 #define PORT 6969
 
 Server::Server() { std::cout << "Hello from server 🖥️ " << std::endl; }
@@ -37,11 +41,21 @@ bool Server::host(int port) {
     return false;
   }
 
-//TODO: Implement listen and send methods.
-//  valread = read(new_socket, buffer, 1024);
-//  printf("%s\n", buffer);
-//  send(new_socket, hello, strlen(hello), 0);
-//  printf("Hello message sent\n");
-
   return true;
+}
+
+bool Server::sendMessage(const char *message) {
+  if (send(new_socket, message, strlen(message), 0) < 0) {
+    printf("\n Failed to send message (SERVER) \n");
+    return false;
+  }
+  return true;
+}
+
+std::string Server::listen() {
+  char readBuffer[1024] = {0};
+  if (read(new_socket, readBuffer, 1024) < 0) {
+    return "ERROR listening for input (SERVER)";
+  }
+  return readBuffer;
 }

@@ -1,12 +1,13 @@
 #include "networking/Client.h"
 
 #include <arpa/inet.h>
-#include <stdio.h>
-#include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
+#include <cstdio>
+#include <cstring>
 #include <iostream>
+#include <string>
 #define PORT 6969
 
 Client::Client() { std::cout << "Hello from Client 🛂" << std::endl; }
@@ -14,7 +15,10 @@ Client::Client() { std::cout << "Hello from Client 🛂" << std::endl; }
 Client::~Client() {}
 
 std::string Client::listen() {
-  int valread = read(sock, readBuffer, 1024);
+  char readBuffer[1024] = {0};
+  if (read(sock, readBuffer, 1024) < 0) {
+    return "ERROR listening for input (CLIENT)";
+  }
   return readBuffer;
 }
 

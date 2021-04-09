@@ -1,9 +1,15 @@
+#include <iostream>
+
 #include "SChat.h"
 
 int main(int argc, char const *argv[]) {
   SChat schat;
 
-  schat.Run(argc, argv);
+  if (!schat.Run(argc, argv)) {
+    std::cout << "Good bye";
+  }
+
+  std::cout << "Exiting" << std::endl;
 
   return 0;
 }

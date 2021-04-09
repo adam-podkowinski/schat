@@ -7,7 +7,6 @@ class Client {
  private:
   int sock = 0;
   struct sockaddr_in serv_addr;
-  char readBuffer[1024] = {0};
 
  public:
   Client();
