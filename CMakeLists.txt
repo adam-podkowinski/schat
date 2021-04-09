@@ -6,6 +6,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 set(
   SRC_FILES
   src/main.cpp
+  src/networking/Client.cpp
+  src/networking/Server.cpp
+  src/SChat.cpp
 )
 
 include_directories(include/)

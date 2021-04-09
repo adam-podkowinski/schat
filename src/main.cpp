@@ -1,10 +1,9 @@
-#include <cstdlib>
-#include <iostream>
+#include "SChat.h"
 
-int main() {
-  while (true) {
-    system("clear");
-    std::cout << "Hello world" << std::endl;
-  }
+int main(int argc, char const *argv[]) {
+  SChat schat;
+
+  schat.Run(argc, argv);
+
   return 0;
 }
