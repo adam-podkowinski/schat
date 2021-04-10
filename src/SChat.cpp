@@ -22,39 +22,36 @@ bool SChat::Run(int argc, const char* argv[]) {
     if (strcmp(argv[1], "client") == 0) {
       Client client;
       if (!client.connectSocket("127.0.0.1", 6969)) {
-        std::cout << "Couldn't connect to server!" << std::endl;
+        std::cout << RED "Couldn't connect to server!" << std::endl;
         return false;
       }
       while (true) {
         std::string message = client.listen();
-        std::cout << "127.0.0.1:6969 says: " << message << std::endl;
+        std::cout << CYN "127.0.0.1:6969 says: " << message << std::endl;
       }
 
-      client.close();
+      client.closeClient();
 
       // SERVER
     } else if (strcmp(argv[1], "server") == 0) {
       Server server;
-      std::cout
-          << "Waiting for client to connect to this IP (192.168.3.15:6969)"
-          << std::endl;
       if (!server.host(6969)) {
-        std::cout << "Quiting because of server errors" << std::endl;
+        std::cout << RED "Quiting because of server errors" << std::endl;
         return false;
       }
       std::string messageToSend = "";
       while (true) {
-        std::cout << "What to send to client: ";
+        std::cout << CYN "What to send to client: ";
         getline(std::cin, messageToSend);
         if (!server.sendMessage(messageToSend.c_str())) {
-          std::cout << "Failed to send a message" << std::endl;
+          std::cout << RED "Failed to send a message" << std::endl;
         }
       }
 
-      server.close();
+      server.closeServer();
 
     } else {
-      std::cout << "Unrecognized option!" << std::endl;
+      std::cout << RED "Unrecognized option!" << std::endl;
       return false;
     }
   }

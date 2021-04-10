@@ -15,7 +15,7 @@ class Client {
   bool sendMessage(const char* message);
   bool connectSocket(const char* ip, int port);
 
-  inline void close() {
+  inline void closeClient() {
 #if defined(_WIN32) || defined(WIN32)
     closesocket(thisSocket);
     WSACleanup();
@@ -23,4 +23,14 @@ class Client {
     ::close(sock);
 #endif
   }
+
+inline void closeSocket() {
+#if defined(_WIN32) || defined(WIN32)
+  closesocket(thisSocket);
+  WSACleanup();
+#else
+  ::close(sock);
+#endif
+}
+
 };
