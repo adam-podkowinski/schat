@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <tuple>
 
 class Client {
  public:
@@ -11,7 +12,7 @@ class Client {
   Client();
   virtual ~Client();
 
-  std::string listen();
+  std::tuple<bool, std::string> listen();
   bool sendMessage(const char* message);
   bool connectSocket(const char* ip, int port);
 
@@ -24,13 +25,12 @@ class Client {
 #endif
   }
 
-inline void closeSocket() {
+  inline void closeSocket() {
 #if defined(_WIN32) || defined(WIN32)
-  closesocket(thisSocket);
-  WSACleanup();
+    closesocket(thisSocket);
+    WSACleanup();
 #else
-  ::close(sock);
+    ::close(sock);
 #endif
-}
-
+  }
 };

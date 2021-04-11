@@ -51,7 +51,6 @@ bool Server::host(int port) {
   std::cout << NC "Creating socket...\n";
   if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
     perror("socket failed");
-    closeServer();
     return false;
   }
 
@@ -61,7 +60,6 @@ bool Server::host(int port) {
   if (setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt,
                  sizeof(opt))) {
     perror("setsockopt");
-    closeServer();
     return false;
   }
   std::cout << GRN "setsockopt successfull.\n";
@@ -73,7 +71,6 @@ bool Server::host(int port) {
   std::cout << NC "Binding socket...\n";
   if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
     perror(RED "bind failed");
-    closeServer();
     return false;
   }
   std::cout << GRN "Binding socket successful.\n";
@@ -83,18 +80,16 @@ bool Server::host(int port) {
   // Getting local ip address
   std::string localIP = getLocalIP();
 
-  std::cout << CYN "Listening for connection to this IP ( " << localIP
-            << ":" << port << " )...\n";
+  std::cout << CYN "Listening for connection to this IP ( " << localIP << ":"
+            << port << " )...\n";
 
   if (::listen(server_fd, 3) < 0) {
     perror(RED "listen");
-    closeServer();
     return false;
   }
   if ((new_socket = accept(server_fd, (struct sockaddr *)&address,
                            (socklen_t *)&addrlen)) < 0) {
     perror(RED "accept");
-    closeServer();
     return false;
   }
   std::cout << GRN "Client " << inet_ntoa(address.sin_addr) << " connected.\n";
@@ -105,7 +100,6 @@ bool Server::host(int port) {
 bool Server::sendMessage(const char *message) {
   if (send(new_socket, message, strlen(message), 0) < 0) {
     printf(RED "\n Failed to send message (SERVER) \n");
-    closeServer();
     return false;
   }
   return true;
@@ -113,11 +107,8 @@ bool Server::sendMessage(const char *message) {
 
 std::string Server::listen() {
   char readBuffer[1024] = {0};
-  if (recv(new_socket, readBuffer, 1024, 0) < 0) {
-    closeServer();
+  if (recv(new_socket, readBuffer, 1024, 0) <= 0) {
     return RED "ERROR listening for input (SERVER)";
   }
   return readBuffer;
 }
-
-

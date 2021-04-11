@@ -1,8 +1,6 @@
 #include "networking/Client.h"
 
-#include <cstdio>
 #include <cstring>
-#include <string>
 
 #define PORT 6969
 
@@ -10,12 +8,12 @@ Client::Client() {}
 
 Client::~Client() {}
 
-std::string Client::listen() {
+std::tuple<bool, std::string> Client::listen() {
   char readBuffer[1024] = {0};
   if (recv(sock, readBuffer, sizeof(readBuffer), 0) < 0) {
-    return "ERROR listening for input (CLIENT)";
+    return std::make_tuple(false, "ERROR listening for input (CLIENT)");
   }
-  return readBuffer;
+  return std::make_tuple(true, readBuffer);
 }
 
 bool Client::sendMessage(const char *message) {

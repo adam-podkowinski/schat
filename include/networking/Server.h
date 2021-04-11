@@ -14,7 +14,7 @@ class Server {
   virtual ~Server();
 
   bool host(int port);
-  bool sendMessage(const char * message);
+  bool sendMessage(const char* message);
   std::string listen();
 
   inline void closeServer() {
@@ -25,7 +25,7 @@ class Server {
     closeSocket(server_fd);
   }
 
-  inline void closeSocket(int &socketToClose) {
+  inline void closeSocket(int& socketToClose) {
 #if defined(_WIN32) || defined(WIN32)
     closesocket(socketToClose);
 #else

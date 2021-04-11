@@ -1,6 +1,9 @@
 #include "SChat.h"
+#include <signal.h>
 
-int main(int argc, char const *argv[]) {
+int main(int argc, char const *argv[])
+{
+  signal(SIGPIPE, SIG_IGN);
 #if defined(_WIN32) || defined(WIN32)
 
   WSADATA wsaData;
@@ -10,7 +13,8 @@ int main(int argc, char const *argv[]) {
 
   SChat schat;
 
-  if (!schat.Run(argc, argv)) {
+  if (!schat.Run(argc, argv))
+  {
     std::cout << "Good bye";
   }
 
