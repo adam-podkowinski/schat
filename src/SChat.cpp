@@ -26,8 +26,8 @@ bool SChat::clientRun(const char* ip, int port) {
       std::cout << RED "Error while listening to server messages!\n\n";
       return false;
     } else {
-      std::cout << CYN "127.0.0.1:6969 says: " << std::get<1>(result)
-                << std::endl;
+      std::cout << CYN << client.getServerIP() << ":" << port
+                << " says: " << std::get<1>(result) << std::endl;
     }
   }
 
@@ -40,9 +40,10 @@ bool SChat::serverRun(int port) {
     return false;
   }
   std::string messageToSend;
+  std::cin.ignore(2, '\n');
   while (true) {
     std::cout << CYN "What to send to client: ";
-    getline(std::cin, messageToSend);
+    std::getline(std::cin, messageToSend);
     if (messageToSend == "close") {
       server.closeServer();
       return false;
@@ -77,7 +78,11 @@ bool SChat::Run(int argc, const char* argv[]) {
 
         std::cout << CYN "\nCONNECTING TO IP " << connectToIP << " AND PORT "
                   << connectToPort << " ...\n";
-        clientRun(connectToIP.c_str(), connectToPort);
+        if (!clientRun(connectToIP.c_str(), connectToPort)) {
+          sleep(2);
+        }
+
+        std::cout << "\033[2J\033[1;1H";
       }
 
       /* SERVER */
@@ -89,12 +94,14 @@ bool SChat::Run(int argc, const char* argv[]) {
           std::cout << CYN "Host on which port: ";
           std::cin >> port;
         } catch (...) {
-          std::cout << RED "\nGive PORT as int.";
+          std::cout << RED "\nGive PORT as an integer.";
           goto getPORT;
         }
         std::cout << CYN "\nRUNNING SERVER ON PORT: " << port << std::endl;
-        serverRun(port);
-        std::cout << std::endl;
+        if (!serverRun(port)) {
+          sleep(3);
+        }
+        std::cout << "\033[2J\033[1;1H";
       }
     } else {
       std::cout << RED "\nUnrecognized option!\n" << std::endl;

@@ -15,6 +15,7 @@ class Client {
   std::tuple<bool, std::string> listen();
   bool sendMessage(const char* message);
   bool connectSocket(const char* ip, int port);
+  std::string getServerIP();
 
   inline void closeClient() {
 #if defined(_WIN32) || defined(WIN32)

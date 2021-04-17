@@ -8,6 +8,14 @@ Client::Client() {}
 
 Client::~Client() {}
 
+std::string Client::getServerIP() {
+  struct sockaddr_in *pV4Addr = (struct sockaddr_in *)&serv_addr;
+  struct in_addr ipAddr = pV4Addr->sin_addr;
+  char str[INET_ADDRSTRLEN];
+  inet_ntop(AF_INET, &ipAddr, str, INET_ADDRSTRLEN);
+  return str;
+}
+
 std::tuple<bool, std::string> Client::listen() {
   char readBuffer[1024] = {0};
   if (recv(sock, readBuffer, sizeof(readBuffer), 0) <= 0) {
@@ -43,7 +51,8 @@ bool Client::connectSocket(const char *ip, int port) {
     return false;
   }
 
-  std::cout << GRN "Connected to server: " << ip << ":" << port << std::endl << std::endl;
+  std::cout << GRN "Connected to server: " << ip << ":" << port << std::endl
+            << std::endl;
 
   return true;
 }

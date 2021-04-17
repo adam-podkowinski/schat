@@ -1,4 +1,5 @@
 #include "networking/Server.h"
+
 #include <unistd.h>
 
 #include <cstring>
@@ -93,7 +94,9 @@ bool Server::host(int port) {
     perror(RED "accept");
     return false;
   }
-  std::cout << GRN "Client " << inet_ntoa(address.sin_addr) << " connected.\n\n";
+
+  std::cout << GRN "Client " << inet_ntoa(address.sin_addr)
+            << " connected.\n\n";
 
   return true;
 }
