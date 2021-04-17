@@ -14,6 +14,8 @@ set(CMAKE_BUILD_TYPE Debug)
 
 include_directories(include/)
 
+find_package (Threads)
 add_executable(schat ${SRC_FILES})
 
+target_link_libraries(schat Threads::Threads)
 target_precompile_headers(schat PUBLIC include/precompiled.h)

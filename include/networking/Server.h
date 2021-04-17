@@ -25,6 +25,7 @@ class Server {
   bool host(int port);
   bool sendMessage(const char* message);
   std::tuple<bool, std::string> listen();
+  std::string getClientIP();
 
   inline void closeServer() {
 #if defined(_WIN32) || defined(WIN32)

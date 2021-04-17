@@ -4,10 +4,6 @@
 
 #include <cstring>
 
-Server::Server() {}
-
-Server::~Server() {}
-
 std::string getLocalIP() {
   int sock = socket(PF_INET, SOCK_DGRAM, 0);
   sockaddr_in loopback;
@@ -47,6 +43,12 @@ std::string getLocalIP() {
     return buf;
   }
 }
+
+Server::Server() {}
+
+Server::~Server() {}
+
+std::string Server::getClientIP() { return inet_ntoa(address.sin_addr); }
 
 bool Server::host(int port) {
   // Creating socket file descriptor
@@ -95,8 +97,7 @@ bool Server::host(int port) {
     return false;
   }
 
-  std::cout << GRN "Client " << inet_ntoa(address.sin_addr)
-            << " connected.\n\n";
+  std::cout << GRN "Client " << getClientIP() << " connected.\n\n";
 
   return true;
 }
