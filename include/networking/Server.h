@@ -1,6 +1,15 @@
 #pragma once
 
 #include <iostream>
+#include <tuple>
+
+inline void closeSocket(int& socketToClose) {
+#if defined(_WIN32) || defined(WIN32)
+  closesocket(socketToClose);
+#else
+  ::close(socketToClose);
+#endif
+}
 
 class Server {
  private:
@@ -15,7 +24,7 @@ class Server {
 
   bool host(int port);
   bool sendMessage(const char* message);
-  std::string listen();
+  std::tuple<bool, std::string> listen();
 
   inline void closeServer() {
 #if defined(_WIN32) || defined(WIN32)
@@ -23,13 +32,5 @@ class Server {
 #endif
     closeSocket(new_socket);
     closeSocket(server_fd);
-  }
-
-  inline void closeSocket(int& socketToClose) {
-#if defined(_WIN32) || defined(WIN32)
-    closesocket(socketToClose);
-#else
-    ::close(socketToClose);
-#endif
   }
 };

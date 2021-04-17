@@ -1,4 +1,5 @@
 #include "networking/Server.h"
+#include <unistd.h>
 
 #include <cstring>
 
@@ -22,7 +23,7 @@ std::string getLocalIP() {
 
   if (connect(sock, reinterpret_cast<sockaddr *>(&loopback),
               sizeof(loopback)) == -1) {
-    close(sock);
+    closeSocket(sock);
     std::cerr << "Could not connect\n";
     return "error";
   }
@@ -30,12 +31,12 @@ std::string getLocalIP() {
   socklen_t addrlen = sizeof(loopback);
   if (getsockname(sock, reinterpret_cast<sockaddr *>(&loopback), &addrlen) ==
       -1) {
-    close(sock);
+    closeSocket(sock);
     std::cerr << "Could not getsockname\n";
     return "error";
   }
 
-  close(sock);
+  closeSocket(sock);
 
   char buf[INET_ADDRSTRLEN];
   if (inet_ntop(AF_INET, &loopback.sin_addr, buf, INET_ADDRSTRLEN) == 0x0) {
@@ -81,7 +82,7 @@ bool Server::host(int port) {
   std::string localIP = getLocalIP();
 
   std::cout << CYN "Listening for connection to this IP ( " << localIP << ":"
-            << port << " )...\n";
+            << port << " )...\n\n";
 
   if (::listen(server_fd, 3) < 0) {
     perror(RED "listen");
@@ -92,23 +93,23 @@ bool Server::host(int port) {
     perror(RED "accept");
     return false;
   }
-  std::cout << GRN "Client " << inet_ntoa(address.sin_addr) << " connected.\n";
+  std::cout << GRN "Client " << inet_ntoa(address.sin_addr) << " connected.\n\n";
 
   return true;
 }
 
 bool Server::sendMessage(const char *message) {
   if (send(new_socket, message, strlen(message), 0) < 0) {
-    printf(RED "\n Failed to send message (SERVER) \n");
+    printf(RED "\nFailed to send message (SERVER) \n");
     return false;
   }
   return true;
 }
 
-std::string Server::listen() {
+std::tuple<bool, std::string> Server::listen() {
   char readBuffer[1024] = {0};
-  if (recv(new_socket, readBuffer, 1024, 0) <= 0) {
-    return RED "ERROR listening for input (SERVER)";
+  if (recv(new_socket, readBuffer, sizeof(readBuffer), 0) <= 0) {
+    return std::make_tuple(false, RED "ERROR listening for input (SERVER)");
   }
-  return readBuffer;
+  return std::make_tuple(true, readBuffer);
 }

@@ -10,15 +10,15 @@ Client::~Client() {}
 
 std::tuple<bool, std::string> Client::listen() {
   char readBuffer[1024] = {0};
-  if (recv(sock, readBuffer, sizeof(readBuffer), 0) < 0) {
-    return std::make_tuple(false, "ERROR listening for input (CLIENT)");
+  if (recv(sock, readBuffer, sizeof(readBuffer), 0) <= 0) {
+    return std::make_tuple(false, RED "ERROR listening for input (CLIENT)");
   }
   return std::make_tuple(true, readBuffer);
 }
 
 bool Client::sendMessage(const char *message) {
   if (send(sock, message, strlen(message), 0) < 0) {
-    printf("\n Failed to send message (CLIENT) \n");
+    std::cout << "\n Failed to send message (CLIENT) \n";
     return false;
   }
   return true;
@@ -43,7 +43,7 @@ bool Client::connectSocket(const char *ip, int port) {
     return false;
   }
 
-  std::cout << "Connected to server: " << ip << ":" << port << std::endl;
+  std::cout << GRN "Connected to server: " << ip << ":" << port << std::endl << std::endl;
 
   return true;
 }
