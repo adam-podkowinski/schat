@@ -7,6 +7,11 @@ class SChat {
   SChat();
   virtual ~SChat();
 
+  bool stopServerListen = false;
+  bool stopServerSend = false;
+  bool stopClientListen = false;
+  bool stopClientSend = false;
+
   bool Run(int argc, char const *argv[]);
   bool clientRun(const char *ip, int port);
   bool serverRun(int port);
