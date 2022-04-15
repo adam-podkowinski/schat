@@ -23,8 +23,9 @@ bool SChat::serverListen(Server *server) {
       return false;
     } else {
       std::cout << CYN << std::endl
-                << server->getClientIP() << ":"
-                << " says: " << std::get<1>(result) << std::endl;
+                << "→ " << server->getClientIP() << ":"
+                << " says: " << std::get<1>(result) << std::endl << "→ ";
+      std::cout.flush();
     }
   }
 
@@ -32,14 +33,13 @@ bool SChat::serverListen(Server *server) {
 }
 bool SChat::serverSend(Server *server) {
   std::string messageToSend;
-  std::cin.ignore(2, '\n');
   while (true) {
     if (stopServerSend) {
       stopServerSend = false;
       return false;
     }
-    std::cout << CYN "\nWhat to send to client: ";
-    std::getline(std::cin, messageToSend);
+    std::cout << CYN "→ ";
+    std::cin >> messageToSend;
     if (messageToSend == "close") {
       server->closeServer();
       stopServerListen = true;
@@ -68,8 +68,9 @@ bool SChat::clientListen(Client *client, int port) {
       return false;
     } else {
       std::cout << CYN << std::endl
-                << client->getServerIP() << ":" << port
-                << " says: " << std::get<1>(result) << std::endl;
+                << "→ " << client->getServerIP() << ":" << port
+                << " says: " << std::get<1>(result) << std::endl << "→ ";
+      std::cout.flush();
     }
   }
 
@@ -77,14 +78,13 @@ bool SChat::clientListen(Client *client, int port) {
 }
 bool SChat::clientSend(Client *client) {
   std::string messageToSend;
-  std::cin.ignore(2, '\n');
   while (true) {
     if (stopClientSend) {
       stopClientSend = false;
       return false;
     }
-    std::cout << CYN "\nWhat to send to server: ";
-    std::getline(std::cin, messageToSend);
+    std::cout << CYN "→ ";
+    std::cin >> messageToSend;
     if (messageToSend == "close") {
       std::cout << "Closing by command close";
       client->closeClient();

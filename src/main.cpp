@@ -14,7 +14,7 @@ int main(int argc, char const *argv[]) {
   SChat schat;
 
   if (!schat.Run(argc, argv)) {
-    std::cout << "Good bye";
+    std::cout << "Error!";
   }
 
   std::cout << "Exiting" << std::endl;

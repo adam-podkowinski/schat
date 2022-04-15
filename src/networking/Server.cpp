@@ -15,8 +15,8 @@ std::string getLocalIP() {
 
   std::memset(&loopback, 0, sizeof(loopback));
   loopback.sin_family = AF_INET;
-  loopback.sin_addr.s_addr = 1337;  // can be any IP address
-  loopback.sin_port = htons(9);     // using debug port
+  loopback.sin_addr.s_addr = 1337;
+  loopback.sin_port = htons(9);
 
   if (connect(sock, reinterpret_cast<sockaddr *>(&loopback),
               sizeof(loopback)) == -1) {
