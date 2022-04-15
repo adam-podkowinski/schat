@@ -1,6 +1,4 @@
 # schat
 ## What's that?
-An easy to use, minimal LAN chat
-### If you can, please contribute :)
-
-Cheers
+An easy to use, minimalistic LAN chat
+### Don't hesitate to contribute :)
